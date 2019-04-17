@@ -1,5 +1,6 @@
 
 - hosts: phare
+  gather_facts: no
   vars:
     service_account_file: tvb-cluster-phare-1f9becec5035.json
     auth_kind: serviceaccount
@@ -20,5 +21,6 @@
         scopes: "{{ scopes }}"
         state: present
       register: disk
+      delegate_to: localhost
 
 # vim: ts=2:sts=2:sw=2:expandtab:ai:list
