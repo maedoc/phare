@@ -1,0 +1,6 @@
+plugin: gcp_compute
+projects:
+  - tvb-cluster-phare
+filters:
+auth_kind: serviceaccount
+service_account_file: tvb-cluster-phare-1f9becec5035.json
