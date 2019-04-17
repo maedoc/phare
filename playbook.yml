@@ -70,6 +70,9 @@
           - https://www.googleapis.com/auth/compute
       register: instance
 
+    - name: debug instance register
+      debug: var={{ instance }}
+
     - name: Wait SSH to come up
       wait_for: host={{ instance.address }} port=22 delay=10 timeout=60
 
