@@ -17,6 +17,7 @@
         source_image: "projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts"
         zone: "{{ zone }}"
         auth_kind: "{{ auth_kind }}"
+        project: "{{ project }}"
         service_account_file: "{{ service_account_file }}"
         scopes: "{{ scopes }}"
         state: present
