@@ -2,3 +2,5 @@ before_install:
 - sudo apt-get update
 - sudo apt-get install -y ansible
 
+install:
+- ansible -i hosts playbook.yml
