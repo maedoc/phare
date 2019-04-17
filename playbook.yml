@@ -9,6 +9,7 @@
     project: tvb-cluster-phare
     zone: "europe-north1-a"
     region: "europe-north1"
+    auto_delete_vm_disk: false
   tasks:
     - name: create a disk
       gcp_compute_disk:
@@ -34,5 +35,57 @@
           - https://www.googleapis.com/auth/compute
         state: present
       register: network
+
+    - name: create an IP address
+      gcp_compute_address:
+        name: "phare-ip"
+        region: "{{ region }}"
+        project: "{{ project }}"
+        auth_kind: "{{ auth_kind }}"
+        service_account_file: "{{ service_account_file }}"
+        scopes:
+          - https://www.googleapis.com/auth/compute
+        state: present
+      register: address
+
+    - name: create instance
+      gcp_compute_instance:
+        name: "phare-vm"
+        machine_type: "f1-micro"
+        disks:
+          - auto_delete: "{{ auto_delete_vm_disk }}"
+            boot: true
+            source: "{{ disk }}"
+        network_interfaces:
+          - network: "{{ network }}"
+            access_configs:
+              - name: 'External NAT'
+                nat_ip: "{{ address }}"
+                type: 'ONE_TO_ONE_NAT'
+        zone: "{{ zone }}"
+        project: "{{ project }}"
+        auth_kind: "{{ auth_kind }}"
+        service_account_file: "{{ service_account_file }}"
+        scopes:
+          - https://www.googleapis.com/auth/compute
+      register: instance
+
+    - name: Wait SSH to come up
+      wait_for: host={{ instance.address }} port=22 delay=10 timeout=60
+
+    - name: Add host to groupname
+      add_host: hostname={{ instance.address }} groupname=new_instances
+
+
+- name: Configure new instances
+  hosts: new_instances
+  connection: ssh
+  sudo: True
+  tasks:
+    - name: Set hostname
+      hostname:
+        name: phare.tvb-ins.fr
+
+
 
 # vim: ts=2:sts=2:sw=2:expandtab:ai:list
