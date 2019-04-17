@@ -9,4 +9,4 @@ install:
   - pip install requests google-auth
 
 script:
-  - ansible -i hosts playbook.yml
+  - ansible-playbook -i hosts playbook.yml
