@@ -2,5 +2,7 @@
 
  - hosts: phare
    - tasks:
-     - name: ping phare
-       ping:
+
+    # this shouldn't work
+    - name: ping phare
+      ping:
