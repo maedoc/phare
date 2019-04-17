@@ -8,9 +8,7 @@
     project: tvb-cluster-phare
     zone: "europe-north1"
     region: "europe-north1-a"
-
-  - tasks:
-
+  tasks:
     - name: create a disk
       gcp_compute_disk:
         name: "phare-disk"
