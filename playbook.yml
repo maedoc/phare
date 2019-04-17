@@ -1,5 +1,7 @@
 
-- hosts: phare
+- name: provision VM on GCP
+  hosts: localhost
+  connection: local
   gather_facts: no
   vars:
     service_account_file: tvb-cluster-phare-1f9becec5035.json
@@ -21,6 +23,16 @@
           - https://www.googleapis.com/auth/compute
         state: present
       register: disk
-      delegate_to: localhost
+
+    - name: create a network
+      gcp_compute_network:
+        name: "phare-network"
+        project: "{{ project }}"
+        auth_kind: "{{ auth_kind }}"
+        service_account_file: "{{ service_account_file }}"
+        scopes:
+          - https://www.googleapis.com/auth/compute
+        state: present
+      register: network
 
 # vim: ts=2:sts=2:sw=2:expandtab:ai:list
