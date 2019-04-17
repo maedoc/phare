@@ -4,8 +4,6 @@
   vars:
     service_account_file: tvb-cluster-phare-1f9becec5035.json
     auth_kind: serviceaccount
-    scopes:
-      - www.googleapis.com/auth/compute
     project: tvb-cluster-phare
     zone: "europe-north1"
     region: "europe-north1-a"
@@ -19,7 +17,8 @@
         auth_kind: "{{ auth_kind }}"
         project: "{{ project }}"
         service_account_file: "{{ service_account_file }}"
-        scopes: "{{ scopes }}"
+        scopes:
+          - https://www.googleapis.com/auth/compute
         state: present
       register: disk
       delegate_to: localhost
