@@ -1,8 +1,12 @@
 before_install:
-- sudo apt-get update
-- sudo apt-get install -y ansible
+  - sudo apt-get update
+  - sudo apt-get install -y ansible
+  - openssl aes-256-cbc -K $encrypted_d7e82ef91fd9_key -iv $encrypted_d7e82ef91fd9_iv -in tvb-cluster-phare-1f9becec5035.json.enc -out tvb-cluster-phare-1f9becec5035.json -d
 
 language: python
 
+install:
+  - pip install requests google-auth
+
 script:
-- ansible -i hosts playbook.yml
+  - ansible -i hosts playbook.yml

@@ -1,8 +1,26 @@
- ---
 
- - hosts: phare
-   - tasks:
+- hosts: phare
+  vars:
+    service_account_file: tvb-cluster-phare-1f9becec5035.json
+    auth_kind: serviceaccount
+    scopes:
+      - www.googleapis.com/auth/compute
+    project: tvb-cluster-phare
+    zone: "europe-north1"
+    region: "europe-north1-a"
 
-    # this shouldn't work
-    - name: ping phare
-      ping:
+  - tasks:
+
+    - name: create a disk
+      gcp_compute_disk:
+        name: "phare-disk"
+        size_gb: 15
+        source_image: "projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts"
+        zone: "{{ zone }}"
+        auth_kind: "{{ auth_kind }}"
+        service_account_file: "{{ service_account_file }}"
+        scopes: "{{ scopes }}"
+        state: present
+      register: disk
+
+# vim: ts=2:sts=2:sw=2:expandtab:ai:list
