@@ -5,8 +5,8 @@
     service_account_file: tvb-cluster-phare-1f9becec5035.json
     auth_kind: serviceaccount
     project: tvb-cluster-phare
-    zone: "europe-north1"
-    region: "europe-north1-a"
+    zone: "europe-north1-a"
+    region: "europe-north1"
   tasks:
     - name: create a disk
       gcp_compute_disk:
