@@ -11,13 +11,26 @@
     zone: "europe-north1-a"
     region: "europe-north1"
     auto_delete_vm_disk: false
+    recreate_disk: true
 
   tasks:
+
+    - name: remove disk
+      gcp_compute_disk:
+        name: "phare-disk"
+        zone: "{{ zone }}"
+        auth_kind: "{{ auth_kind }}"
+        project: "{{ project }}"
+        service_account_file: "{{ service_account_file }}"
+        scopes:
+          - https://www.googleapis.com/auth/compute
+        state: absent
+
     - name: create a disk
       gcp_compute_disk:
         name: "phare-disk"
         size_gb: 15
-        source_image: "projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts"
+        source_image: "projects/gce-uefi-images/global/images/family/centos-7"
         zone: "{{ zone }}"
         auth_kind: "{{ auth_kind }}"
         project: "{{ project }}"
