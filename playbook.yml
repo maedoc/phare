@@ -123,7 +123,6 @@
 
     - name: Add host to groupname
       add_host:
-        name: phare
         groupname: phares
         hostname: "{{ address.address }}"
         ansible_hostname: "{{ address.address }}"

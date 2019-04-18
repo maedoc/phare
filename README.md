@@ -12,3 +12,11 @@ an alternative stack
 
 Ansible is used to provision the VM, configure it, update the
 DNS records, update/backup the data.
+
+This VM should host
+
+- [ ] Prometheus
+- [ ] Alertmanager
+- [ ] Grafana
+- [ ] Periodic backups of monitoring data
+- [ ] Rocketchat for out of band team communication
