@@ -1,8 +1,0 @@
-connection: local
-gather_facts: no
-service_account_file: gccreds.json
-auth_kind: serviceaccount
-project: tvb-cluster-phare
-zone: "europe-north1-a"
-region: "europe-north1"
-scopes: ["https://www.googleapis.com/auth/compute"]
