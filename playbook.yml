@@ -76,6 +76,8 @@
         project: "{{ project }}"
         auth_kind: "{{ auth_kind }}"
         service_account_file: "{{ service_account_file }}"
+        scopes:
+          - https://www.googleapis.com/auth/compute
         state: present        
 
     - name: create an IP address
