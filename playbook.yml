@@ -50,10 +50,6 @@
         state: present
       register: address
 
-    - name: show address
-      debug:
-        var: address
-
     - name: create instance
       gcp_compute_instance:
         name: "phare-vm"
@@ -76,15 +72,11 @@
           - https://www.googleapis.com/auth/compute
       register: instance
 
-    - name: debug instance register
-      debug: 
-        var: instance
-
     - name: Wait SSH to come up
-      wait_for: host={{ instance.address }} port=22 delay=10 timeout=60
+      wait_for: host={{ address.address }} port=22 delay=10 timeout=60
 
     - name: Add host to groupname
-      add_host: hostname={{ instance.address }} groupname=new_instances
+      add_host: hostname={{ address.address }} groupname=new_instances
 
 
 - name: Configure new instances
