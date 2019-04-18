@@ -126,6 +126,7 @@
         name: phare
         groupname: phares
         hostname: "{{ address.address }}"
+        ansible_hostname: "{{ address.address }}"
 
 
 - name: Configure new instances
