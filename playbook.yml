@@ -68,6 +68,7 @@
     - name: allow SSH through firewall
       gcp_compute_firewall:
         name: "phare-ssh-allow"
+        network: "{{ network }}"
         allowed:
           - ip_protocol: tcp
             ports:
