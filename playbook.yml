@@ -1,15 +1,8 @@
 
 - name: provision VM on GCP
   hosts: localhost
-  connection: local
-  gather_facts: no
 
   vars:
-    service_account_file: gccreds.json
-    auth_kind: serviceaccount
-    project: tvb-cluster-phare
-    zone: "europe-north1-a"
-    region: "europe-north1"
     auto_delete_vm_disk: false
     recreate_disk: false
     recreate_instance: false
@@ -19,24 +12,12 @@
     - name: remove instance
       gcp_compute_instance:
         name: "phare-vm"
-        zone: "{{ zone }}"
-        project: "{{ project }}"
-        auth_kind: "{{ auth_kind }}"
-        service_account_file: "{{ service_account_file }}"
-        scopes:
-          - https://www.googleapis.com/auth/compute
         state: absent
       when: recreate_disk or recreate_instance
 
     - name: remove disk
       gcp_compute_disk:
         name: "phare-disk"
-        zone: "{{ zone }}"
-        auth_kind: "{{ auth_kind }}"
-        project: "{{ project }}"
-        service_account_file: "{{ service_account_file }}"
-        scopes:
-          - https://www.googleapis.com/auth/compute
         state: absent
       when: recreate_disk
 
@@ -45,23 +26,12 @@
         name: "phare-disk"
         size_gb: 15
         source_image: "projects/gce-uefi-images/global/images/family/centos-7"
-        zone: "{{ zone }}"
-        auth_kind: "{{ auth_kind }}"
-        project: "{{ project }}"
-        service_account_file: "{{ service_account_file }}"
-        scopes:
-          - https://www.googleapis.com/auth/compute
         state: present
       register: disk
 
     - name: create a network
       gcp_compute_network:
         name: "phare-network"
-        project: "{{ project }}"
-        auth_kind: "{{ auth_kind }}"
-        service_account_file: "{{ service_account_file }}"
-        scopes:
-          - https://www.googleapis.com/auth/compute
         state: present
       register: network
 
@@ -77,22 +47,11 @@
           - ip_protocol: tcp
             ports:
               - '22'
-        project: "{{ project }}"
-        auth_kind: "{{ auth_kind }}"
-        service_account_file: "{{ service_account_file }}"
-        scopes:
-          - https://www.googleapis.com/auth/compute
         state: present        
 
     - name: create an IP address
       gcp_compute_address:
         name: "phare-ip"
-        region: "{{ region }}"
-        project: "{{ project }}"
-        auth_kind: "{{ auth_kind }}"
-        service_account_file: "{{ service_account_file }}"
-        scopes:
-          - https://www.googleapis.com/auth/compute
         state: present
       register: address
 
@@ -110,12 +69,6 @@
               - name: 'External NAT'
                 nat_ip: "{{ address }}"
                 type: 'ONE_TO_ONE_NAT'
-        zone: "{{ zone }}"
-        project: "{{ project }}"
-        auth_kind: "{{ auth_kind }}"
-        service_account_file: "{{ service_account_file }}"
-        scopes:
-          - https://www.googleapis.com/auth/compute
       register: instance
 
     - name: Wait SSH to come up
@@ -126,6 +79,7 @@
         name: phare
         groupname: phares
         hostname: "{{ address.address }}"
+        ansible_hostname: "{{ address.address }}"
 
 
 - name: Configure new instances
