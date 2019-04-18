@@ -3,6 +3,7 @@
   hosts: localhost
   connection: local
   gather_facts: no
+
   vars:
     service_account_file: tvb-cluster-phare-1f9becec5035.json
     auth_kind: serviceaccount
@@ -10,6 +11,7 @@
     zone: "europe-north1-a"
     region: "europe-north1"
     auto_delete_vm_disk: false
+
   tasks:
     - name: create a disk
       gcp_compute_disk:
@@ -71,7 +73,8 @@
       register: instance
 
     - name: debug instance register
-      debug: var={{ instance }}
+      debug: 
+        var: instance
 
     - name: Wait SSH to come up
       wait_for: host={{ instance.address }} port=22 delay=10 timeout=60
@@ -88,7 +91,3 @@
     - name: Set hostname
       hostname:
         name: phare.tvb-ins.fr
-
-
-
-# vim: ts=2:sts=2:sw=2:expandtab:ai:list
