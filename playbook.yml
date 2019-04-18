@@ -50,6 +50,10 @@
         state: present
       register: address
 
+    - name: show address
+      debug:
+        var: address
+
     - name: create instance
       gcp_compute_instance:
         name: "phare-vm"
