@@ -11,7 +11,7 @@
     zone: "europe-north1-a"
     region: "europe-north1"
     auto_delete_vm_disk: false
-    recreate_disk: true
+    recreate_disk: false
     recreate_instance: false
 
   tasks:
@@ -64,6 +64,18 @@
           - https://www.googleapis.com/auth/compute
         state: present
       register: network
+
+    - name: allow SSH through firewall
+      gcp_compute_firewall:
+        name: "phare-ssh-allow"
+        allowed:
+          - ip_protocol: tcp
+            ports:
+              - '22'
+        project: "{{ project }}"
+        auth_kind: "{{ auth_kind }}"
+        service_account_file: "{{ service_account_file }}"
+        state: present        
 
     - name: create an IP address
       gcp_compute_address:
