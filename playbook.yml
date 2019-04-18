@@ -1,6 +1,8 @@
 
 - name: provision VM on GCP
   hosts: localhost
+  connection: local
+  gather_facts: no
 
   vars:
     auto_delete_vm_disk: false
